@@ -22,7 +22,7 @@ const ChatbotContainer = styled.div<{ isOpen: boolean; isMinimized: boolean }>`
   pointer-events: ${props => props.isOpen ? 'auto' : 'none'};
 
   /* Adjust positioning for smaller screens */
-  @media (max-width: 1366px) {
+  @media (max-width: 1440px) {
     bottom: ${spacing[4]};
     right: ${spacing[4]};
   }
@@ -59,7 +59,7 @@ const ChatButton = styled.button<{ isOpen: boolean }>`
   }
 
   /* Adjust positioning for smaller screens */
-  @media (max-width: 1366px) {
+  @media (max-width: 1440px) {
     bottom: ${spacing[4]};
     right: ${spacing[4]};
     width: 55px;
@@ -115,7 +115,7 @@ const ChatWindow = styled.div<{ isMinimized: boolean }>`
   transition: all 0.3s ease;
 
   /* Responsive sizing for different desktop screens */
-  @media (max-width: 1366px) {
+  @media (max-width: 1440px) {
     width: ${props => props.isMinimized ? '350px' : '420px'};
     height: ${props => props.isMinimized ? '70px' : '500px'};
   }

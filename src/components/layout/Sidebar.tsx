@@ -26,14 +26,19 @@ const SidebarContainer = styled.aside<{ collapsed: boolean }>`
   left: 0;
   z-index: 90;
 
-  /* Auto-collapse on smaller laptop screens */
-  @media (max-width: 1366px) {
+  /* Auto-collapse on MacBook and smaller laptop screens */
+  @media (max-width: 1440px) {
     width: ${props => props.collapsed ? '80px' : '280px'};
   }
 
-  /* Further reduce on very small laptop screens */
+  /* Further reduce on smaller laptop screens */
   @media (max-width: 1280px) {
     width: ${props => props.collapsed ? '80px' : '260px'};
+  }
+
+  /* Even smaller for very small screens */
+  @media (max-width: 1024px) {
+    width: ${props => props.collapsed ? '80px' : '240px'};
   }
 `;
 
