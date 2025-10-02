@@ -161,46 +161,46 @@ const ChatWindow = styled.div<{ isMinimized: boolean }>`
   /* Standard laptops (MacBook Pro 13", ThinkPad, etc.) */
   @media (max-width: 1440px) {
     width: ${props => props.isMinimized ? '350px' : '420px'};
-    height: ${props => props.isMinimized ? '70px' : '450px'};
+    height: ${props => props.isMinimized ? '70px' : '500px'};
   }
 
   /* Smaller laptops (MacBook Air, Ultrabooks) */
   @media (max-width: 1280px) {
     width: ${props => props.isMinimized ? '320px' : '380px'};
-    height: ${props => props.isMinimized ? '65px' : '400px'};
+    height: ${props => props.isMinimized ? '65px' : '450px'};
   }
 
   /* Small laptops and large tablets */
   @media (max-width: 1024px) {
     width: ${props => props.isMinimized ? '300px' : '350px'};
-    height: ${props => props.isMinimized ? '60px' : '350px'};
+    height: ${props => props.isMinimized ? '60px' : '400px'};
   }
 
   /* Tablets and very small laptops */
   @media (max-width: 768px) {
     width: ${props => props.isMinimized ? '280px' : '320px'};
-    height: ${props => props.isMinimized ? '55px' : '300px'};
+    height: ${props => props.isMinimized ? '55px' : '350px'};
   }
 
   /* Height constraints for different screen heights */
   @media (max-height: 1000px) {
-    height: ${props => props.isMinimized ? '60px' : '400px'};
+    height: ${props => props.isMinimized ? '60px' : '450px'};
   }
 
   @media (max-height: 900px) {
-    height: ${props => props.isMinimized ? '60px' : '350px'};
+    height: ${props => props.isMinimized ? '60px' : '400px'};
   }
 
   @media (max-height: 850px) {
-    height: ${props => props.isMinimized ? '60px' : '300px'};
+    height: ${props => props.isMinimized ? '60px' : '350px'};
   }
 
   @media (max-height: 800px) {
-    height: ${props => props.isMinimized ? '60px' : '280px'};
+    height: ${props => props.isMinimized ? '60px' : '320px'};
   }
 
   @media (max-height: 700px) {
-    height: ${props => props.isMinimized ? '60px' : '250px'};
+    height: ${props => props.isMinimized ? '60px' : '280px'};
   }
 `;
 
@@ -449,6 +449,11 @@ const QuickActions = styled.div`
   flex-wrap: wrap;
   gap: ${spacing[2]};
   margin-bottom: ${spacing[3]};
+
+  /* Hide quick actions on small screens to save space */
+  @media (max-width: 1440px) {
+    display: none;
+  }
 `;
 
 const QuickActionButton = styled.button`

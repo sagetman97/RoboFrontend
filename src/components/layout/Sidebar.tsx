@@ -172,6 +172,16 @@ const Sidebar: React.FC<SidebarProps> = ({
   onToggle
 }) => {
   const location = useLocation();
+
+  // Handle navigation click on small screens - prevent sidebar expansion
+  const handleNavClick = (e: React.MouseEvent) => {
+    if (window.innerWidth <= 1536 && !collapsed) {
+      // On small screens, if sidebar is open, close it after navigation
+      setTimeout(() => {
+        if (onToggle) onToggle();
+      }, 100);
+    }
+  };
   
   const mainNavItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
@@ -204,6 +214,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 to={item.path}
                 active={location.pathname === item.path}
                 collapsed={collapsed}
+                onClick={handleNavClick}
               >
                 <NavIcon active={location.pathname === item.path}>
                   <Icon size={20} />
@@ -224,6 +235,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 to={item.path}
                 active={location.pathname === item.path}
                 collapsed={collapsed}
+                onClick={handleNavClick}
               >
                 <NavIcon active={location.pathname === item.path}>
                   <Icon size={20} />
