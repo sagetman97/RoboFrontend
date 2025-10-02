@@ -334,6 +334,47 @@ const ApprovalButton = styled.button`
   }
 `;
 
+const PostApprovalActions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing[4]};
+`;
+
+const PostApprovalButton = styled.button<{ variant: 'orange' | 'cherry' }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${spacing[2]};
+  padding: ${spacing[4]} ${spacing[6]};
+  border: none;
+  border-radius: ${borderRadius.lg};
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+
+  ${props => props.variant === 'orange' ? `
+    background: ${colors.everlyOrange};
+    color: ${colors.white};
+
+    &:hover {
+      background: #E55A1A;
+      transform: translateY(-1px);
+      box-shadow: ${shadows.md};
+    }
+  ` : `
+    background: ${colors.everlyCherry};
+    color: ${colors.white};
+
+    &:hover {
+      background: #A0005A;
+      transform: translateY(-1px);
+      box-shadow: ${shadows.md};
+    }
+  `}
+`;
+
 const NotesSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -430,6 +471,16 @@ const ReportViewer: React.FC = () => {
 
   const handleApprove = () => {
     setReportStatus('approved');
+  };
+
+  const handleSendReport = () => {
+    // Navigate to communication page with report template
+    navigate('/communication?template=report');
+  };
+
+  const handleStartApplication = () => {
+    // Open Everly application in new tab
+    window.open('https://everlylife.com/apply', '_blank');
   };
 
   const handleEdit = () => {
@@ -655,32 +706,47 @@ const ReportViewer: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle>Approval Workflow</CardTitle>
-                <CardSubtitle>Review and approve this report</CardSubtitle>
+                <CardSubtitle>
+                  {reportStatus === 'approved' ? 'Report approved - ready for next steps' : 'Review and approve this report'}
+                </CardSubtitle>
               </CardHeader>
               <CardContent>
-                <ApprovalSection>
-                  <ApprovalTitle>Agent Review</ApprovalTitle>
-                  <ApprovalActions>
-                    <ApprovalButton className="approve" onClick={handleApprove}>
-                      <CheckCircle size={16} />
-                      Approve
-                    </ApprovalButton>
-                    <ApprovalButton className="edit" onClick={handleEdit}>
-                      <Edit size={16} />
-                      Edit
-                    </ApprovalButton>
-                  </ApprovalActions>
-                  <NotesSection>
-                    <label style={{ fontSize: '14px', fontWeight: '500', color: colors.textPrimary }}>
-                      Agent Notes
-                    </label>
-                    <NotesTextArea
-                      value={agentNotes}
-                      onChange={(e) => setAgentNotes(e.target.value)}
-                      placeholder="Add notes about this report..."
-                    />
-                  </NotesSection>
-                </ApprovalSection>
+                {reportStatus === 'approved' ? (
+                  <PostApprovalActions>
+                    <PostApprovalButton variant="cherry" onClick={handleSendReport}>
+                      <Send size={20} />
+                      Send Report
+                    </PostApprovalButton>
+                    <PostApprovalButton variant="orange" onClick={handleStartApplication}>
+                      <FileText size={20} />
+                      Start Application
+                    </PostApprovalButton>
+                  </PostApprovalActions>
+                ) : (
+                  <ApprovalSection>
+                    <ApprovalTitle>Agent Review</ApprovalTitle>
+                    <ApprovalActions>
+                      <ApprovalButton className="approve" onClick={handleApprove}>
+                        <CheckCircle size={16} />
+                        Approve
+                      </ApprovalButton>
+                      <ApprovalButton className="edit" onClick={handleEdit}>
+                        <Edit size={16} />
+                        Edit
+                      </ApprovalButton>
+                    </ApprovalActions>
+                    <NotesSection>
+                      <label style={{ fontSize: '14px', fontWeight: '500', color: colors.textPrimary }}>
+                        Agent Notes
+                      </label>
+                      <NotesTextArea
+                        value={agentNotes}
+                        onChange={(e) => setAgentNotes(e.target.value)}
+                        placeholder="Add notes about this report..."
+                      />
+                    </NotesSection>
+                  </ApprovalSection>
+                )}
               </CardContent>
             </Card>
 
