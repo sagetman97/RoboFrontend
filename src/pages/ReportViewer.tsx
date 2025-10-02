@@ -20,7 +20,7 @@ import { colors, spacing, borderRadius, shadows, typography } from '../styles/de
 const ReportContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacing[6]};
+  gap: ${spacing[2]};
 `;
 
 const BackButton = styled.button`
@@ -45,7 +45,7 @@ const PageHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${spacing[6]};
+  margin-bottom: 0;
 `;
 
 const HeaderInfo = styled.div`
@@ -122,7 +122,7 @@ const ActionButton = styled.button`
 const StatusBanner = styled.div<{ status: string }>`
   padding: ${spacing[4]} ${spacing[6]};
   border-radius: ${borderRadius.lg};
-  margin-bottom: ${spacing[6]};
+  margin-bottom: ${spacing[4]};
   display: flex;
   align-items: center;
   gap: ${spacing[3]};
@@ -149,24 +149,27 @@ const StatusBanner = styled.div<{ status: string }>`
 
 const ReportGrid = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: ${spacing[8]};
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: ${spacing[4]};
+  align-items: stretch;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
   }
 `;
 
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacing[6]};
+  gap: ${spacing[4]};
 `;
 
 const Sidebar = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacing[6]};
+  gap: ${spacing[4]};
 `;
 
 const Card = styled.div`
@@ -175,6 +178,9 @@ const Card = styled.div`
   box-shadow: ${shadows.base};
   border: 1px solid ${colors.border};
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 `;
 
 const CardHeader = styled.div`
@@ -197,6 +203,9 @@ const CardSubtitle = styled.p`
 
 const CardContent = styled.div`
   padding: ${spacing[6]};
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const ExecutiveSummary = styled.div`
@@ -533,13 +542,12 @@ const ReportViewer: React.FC = () => {
         </StatusBanner>
 
         <ReportGrid>
-          <MainContent>
-            <Card>
-              <CardHeader>
-                <CardTitle>Executive Summary</CardTitle>
-                <CardSubtitle>Key findings and recommendations</CardSubtitle>
-              </CardHeader>
-              <CardContent>
+          <Card>
+            <CardHeader>
+              <CardTitle>Executive Summary</CardTitle>
+              <CardSubtitle>Key findings and recommendations</CardSubtitle>
+            </CardHeader>
+            <CardContent>
                 <ExecutiveSummary>
                   <SummaryItem>
                     <SummaryLabel>Current Protection Score</SummaryLabel>
