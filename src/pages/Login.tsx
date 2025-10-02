@@ -368,7 +368,6 @@ const Login: React.FC = () => {
 
         <RightPanel>
           <LoginForm>
-            <FormTitle>Welcome back</FormTitle>
             <FormSubtitle>Sign in to your agent account</FormSubtitle>
 
             {error && <ErrorMessage>{error}</ErrorMessage>}
