@@ -21,7 +21,12 @@ const ChatbotContainer = styled.div<{ isOpen: boolean; isMinimized: boolean }>`
   opacity: ${props => props.isOpen ? 1 : 0};
   pointer-events: ${props => props.isOpen ? 'auto' : 'none'};
 
-  /* Adjust positioning for smaller screens */
+  /* Adjust positioning for different screen sizes */
+  @media (max-width: 1536px) {
+    bottom: ${spacing[5]};
+    right: ${spacing[5]};
+  }
+
   @media (max-width: 1440px) {
     bottom: ${spacing[4]};
     right: ${spacing[4]};
@@ -30,6 +35,16 @@ const ChatbotContainer = styled.div<{ isOpen: boolean; isMinimized: boolean }>`
   @media (max-width: 1280px) {
     bottom: ${spacing[3]};
     right: ${spacing[3]};
+  }
+
+  @media (max-width: 1024px) {
+    bottom: ${spacing[2]};
+    right: ${spacing[2]};
+  }
+
+  @media (max-width: 768px) {
+    bottom: ${spacing[1]};
+    right: ${spacing[1]};
   }
 `;
 
@@ -58,7 +73,14 @@ const ChatButton = styled.button<{ isOpen: boolean }>`
     box-shadow: ${shadows.xl};
   }
 
-  /* Adjust positioning for smaller screens */
+  /* Adjust positioning and size for different screen sizes */
+  @media (max-width: 1536px) {
+    bottom: ${spacing[5]};
+    right: ${spacing[5]};
+    width: 58px;
+    height: 58px;
+  }
+
   @media (max-width: 1440px) {
     bottom: ${spacing[4]};
     right: ${spacing[4]};
@@ -71,6 +93,20 @@ const ChatButton = styled.button<{ isOpen: boolean }>`
     right: ${spacing[3]};
     width: 50px;
     height: 50px;
+  }
+
+  @media (max-width: 1024px) {
+    bottom: ${spacing[2]};
+    right: ${spacing[2]};
+    width: 45px;
+    height: 45px;
+  }
+
+  @media (max-width: 768px) {
+    bottom: ${spacing[1]};
+    right: ${spacing[1]};
+    width: 40px;
+    height: 40px;
   }
 
   &::before {
@@ -114,23 +150,43 @@ const ChatWindow = styled.div<{ isMinimized: boolean }>`
   overflow: hidden;
   transition: all 0.3s ease;
 
-  /* Responsive sizing for different desktop screens */
+  /* Responsive sizing for different screen sizes */
+  
+  /* Large laptops and small external monitors */
+  @media (max-width: 1536px) {
+    width: ${props => props.isMinimized ? '360px' : '450px'};
+    height: ${props => props.isMinimized ? '72px' : '500px'};
+  }
+
+  /* Standard laptops (MacBook Pro 13", ThinkPad, etc.) */
   @media (max-width: 1440px) {
-    width: ${props => props.isMinimized ? '350px' : '400px'};
+    width: ${props => props.isMinimized ? '350px' : '420px'};
     height: ${props => props.isMinimized ? '70px' : '450px'};
   }
 
+  /* Smaller laptops (MacBook Air, Ultrabooks) */
   @media (max-width: 1280px) {
     width: ${props => props.isMinimized ? '320px' : '380px'};
     height: ${props => props.isMinimized ? '65px' : '400px'};
   }
 
+  /* Small laptops and large tablets */
   @media (max-width: 1024px) {
     width: ${props => props.isMinimized ? '300px' : '350px'};
     height: ${props => props.isMinimized ? '60px' : '350px'};
   }
 
-  /* Specific height constraints for short screens like MacBook 1440x810 */
+  /* Tablets and very small laptops */
+  @media (max-width: 768px) {
+    width: ${props => props.isMinimized ? '280px' : '320px'};
+    height: ${props => props.isMinimized ? '55px' : '300px'};
+  }
+
+  /* Height constraints for different screen heights */
+  @media (max-height: 1000px) {
+    height: ${props => props.isMinimized ? '60px' : '400px'};
+  }
+
   @media (max-height: 900px) {
     height: ${props => props.isMinimized ? '60px' : '350px'};
   }
@@ -139,13 +195,11 @@ const ChatWindow = styled.div<{ isMinimized: boolean }>`
     height: ${props => props.isMinimized ? '60px' : '300px'};
   }
 
-  @media (max-height: 820px) {
+  @media (max-height: 800px) {
     height: ${props => props.isMinimized ? '60px' : '280px'};
   }
 
-  /* Specific constraint for MacBook 1440x810 */
-  @media (max-width: 1440px) and (max-height: 820px) {
-    width: ${props => props.isMinimized ? '320px' : '380px'};
+  @media (max-height: 700px) {
     height: ${props => props.isMinimized ? '60px' : '250px'};
   }
 `;

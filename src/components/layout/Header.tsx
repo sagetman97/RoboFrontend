@@ -39,8 +39,8 @@ const MobileMenuButton = styled.button`
     color: ${colors.everlyOrange};
   }
 
-  /* Show on MacBook and smaller laptop screens */
-  @media (max-width: 1440px) {
+  /* Show on laptops and tablets */
+  @media (max-width: 1536px) {
     display: flex;
     align-items: center;
     justify-content: center;

@@ -23,7 +23,11 @@ const MainContent = styled.main<{ sidebarCollapsed: boolean }>`
   overflow-x: auto;
   transition: margin-left 0.3s ease;
 
-  /* Adjust content when sidebar is open on smaller screens */
+  /* Adjust content when sidebar is open on different screen sizes */
+  @media (max-width: 1536px) {
+    margin-left: ${props => props.sidebarCollapsed ? '0' : '300px'};
+  }
+
   @media (max-width: 1440px) {
     margin-left: ${props => props.sidebarCollapsed ? '0' : '280px'};
   }
@@ -34,6 +38,10 @@ const MainContent = styled.main<{ sidebarCollapsed: boolean }>`
 
   @media (max-width: 1024px) {
     margin-left: ${props => props.sidebarCollapsed ? '0' : '240px'};
+  }
+
+  @media (max-width: 768px) {
+    margin-left: ${props => props.sidebarCollapsed ? '0' : '220px'};
   }
 `;
 
@@ -62,11 +70,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   // Auto-collapse/expand sidebar based on screen size
   useEffect(() => {
     const handleResize = () => {
-      // Auto-collapse on MacBook screens and smaller laptops (including 1440px width)
-      if (window.innerWidth <= 1440) {
+      // Auto-collapse on laptops and tablets (≤1536px covers most laptops)
+      if (window.innerWidth <= 1536) {
         setSidebarCollapsed(true);
       } else {
-        // Auto-expand on larger screens (external monitors)
+        // Auto-expand on larger screens (external monitors, large laptops)
         setSidebarCollapsed(false);
       }
     };
@@ -82,8 +90,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
-      // Only auto-close on smaller laptop screens
-      if (window.innerWidth <= 1440 && !sidebarCollapsed) {
+      // Only auto-close on laptops and tablets
+      if (window.innerWidth <= 1536 && !sidebarCollapsed) {
         // Check if click is outside sidebar
         if (!target.closest('[data-sidebar]') && !target.closest('[data-menu-button]')) {
           setSidebarCollapsed(true);

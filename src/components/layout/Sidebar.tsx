@@ -26,19 +26,29 @@ const SidebarContainer = styled.aside<{ collapsed: boolean }>`
   left: 0;
   z-index: 90;
 
-  /* Auto-collapse on MacBook and smaller laptop screens */
+  /* Large laptops and small external monitors */
+  @media (max-width: 1536px) {
+    width: ${props => props.collapsed ? '80px' : '300px'};
+  }
+
+  /* Standard laptops (MacBook Pro 13", ThinkPad, etc.) */
   @media (max-width: 1440px) {
     width: ${props => props.collapsed ? '80px' : '280px'};
   }
 
-  /* Further reduce on smaller laptop screens */
+  /* Smaller laptops (MacBook Air, Ultrabooks) */
   @media (max-width: 1280px) {
     width: ${props => props.collapsed ? '80px' : '260px'};
   }
 
-  /* Even smaller for very small screens */
+  /* Small laptops and large tablets */
   @media (max-width: 1024px) {
     width: ${props => props.collapsed ? '80px' : '240px'};
+  }
+
+  /* Tablets and very small laptops */
+  @media (max-width: 768px) {
+    width: ${props => props.collapsed ? '80px' : '220px'};
   }
 `;
 
