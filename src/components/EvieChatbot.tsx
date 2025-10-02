@@ -155,56 +155,56 @@ const ChatWindow = styled.div<{ isMinimized: boolean }>`
   /* Large laptops and small external monitors */
   @media (max-width: 1536px) {
     width: ${props => props.isMinimized ? '360px' : '450px'};
-    height: ${props => props.isMinimized ? '72px' : '500px'};
+    height: ${props => props.isMinimized ? '72px' : '600px'};
   }
 
   /* Standard laptops (MacBook Pro 13", ThinkPad, etc.) */
   @media (max-width: 1440px) {
     width: ${props => props.isMinimized ? '350px' : '420px'};
-    height: ${props => props.isMinimized ? '70px' : '650px'};
+    height: ${props => props.isMinimized ? '70px' : '700px'};
   }
 
   /* Smaller laptops (MacBook Air, Ultrabooks) */
   @media (max-width: 1280px) {
     width: ${props => props.isMinimized ? '320px' : '380px'};
-    height: ${props => props.isMinimized ? '65px' : '450px'};
+    height: ${props => props.isMinimized ? '65px' : '600px'};
   }
 
   /* Small laptops and large tablets */
   @media (max-width: 1024px) {
     width: ${props => props.isMinimized ? '300px' : '350px'};
-    height: ${props => props.isMinimized ? '60px' : '400px'};
+    height: ${props => props.isMinimized ? '60px' : '550px'};
   }
 
   /* Tablets and very small laptops */
   @media (max-width: 768px) {
     width: ${props => props.isMinimized ? '280px' : '320px'};
-    height: ${props => props.isMinimized ? '55px' : '350px'};
+    height: ${props => props.isMinimized ? '55px' : '500px'};
   }
 
-  /* Height constraints for different screen heights */
+  /* Height constraints for different screen heights - much taller for usability */
   @media (max-height: 1000px) {
-    height: ${props => props.isMinimized ? '60px' : '500px'};
+    height: ${props => props.isMinimized ? '60px' : '600px'};
   }
 
   @media (max-height: 900px) {
-    height: ${props => props.isMinimized ? '60px' : '450px'};
+    height: ${props => props.isMinimized ? '60px' : '550px'};
   }
 
   @media (max-height: 850px) {
-    height: ${props => props.isMinimized ? '60px' : '400px'};
+    height: ${props => props.isMinimized ? '60px' : '500px'};
   }
 
   @media (max-height: 820px) {
-    height: ${props => props.isMinimized ? '60px' : '380px'};
+    height: ${props => props.isMinimized ? '60px' : '480px'};
   }
 
   @media (max-height: 800px) {
-    height: ${props => props.isMinimized ? '60px' : '350px'};
+    height: ${props => props.isMinimized ? '60px' : '450px'};
   }
 
   @media (max-height: 700px) {
-    height: ${props => props.isMinimized ? '60px' : '300px'};
+    height: ${props => props.isMinimized ? '60px' : '400px'};
   }
 `;
 
