@@ -8,7 +8,7 @@ const LoginContainer = styled.div`
   min-height: 100vh;
   height: 100vh;
   display: flex;
-  background: linear-gradient(135deg, ${colors.lightGray} 0%, ${colors.white} 100%);
+  background: ${colors.white};
   justify-content: center;
   align-items: center;
   padding: ${spacing[4]};
@@ -25,6 +25,7 @@ const LoginContent = styled.div`
   height: 90vh;
   min-height: 700px;
   max-height: 800px;
+  box-shadow: ${shadows.xl};
 `;
 
 const LeftPanel = styled.div`
@@ -92,7 +93,7 @@ const Subtitle = styled.p`
 
 const RightPanel = styled.div`
   flex: 0 0 45%;
-  background: ${colors.lightGray};
+  background: ${colors.white};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,7 +105,6 @@ const LoginForm = styled.div`
   background: ${colors.white};
   padding: ${spacing[10]};
   border-radius: ${borderRadius.xl};
-  box-shadow: ${shadows.xl};
   width: 100%;
   max-width: 500px;
   border: 1px solid ${colors.border};
