@@ -161,7 +161,7 @@ const ChatWindow = styled.div<{ isMinimized: boolean }>`
   /* Standard laptops (MacBook Pro 13", ThinkPad, etc.) */
   @media (max-width: 1440px) {
     width: ${props => props.isMinimized ? '350px' : '420px'};
-    height: ${props => props.isMinimized ? '70px' : '700px'};
+    height: ${props => props.isMinimized ? '70px' : '850px'};
   }
 
   /* Smaller laptops (MacBook Air, Ultrabooks) */
@@ -196,7 +196,7 @@ const ChatWindow = styled.div<{ isMinimized: boolean }>`
   }
 
   @media (max-height: 820px) {
-    height: ${props => props.isMinimized ? '60px' : '480px'};
+    height: ${props => props.isMinimized ? '60px' : '630px'};
   }
 
   @media (max-height: 800px) {

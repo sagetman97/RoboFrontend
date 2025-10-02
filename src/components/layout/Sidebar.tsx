@@ -178,6 +178,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     if (window.innerWidth <= 1536 && collapsed) {
       // On small screens, if sidebar is minimized, prevent it from expanding
       e.preventDefault();
+      e.stopPropagation();
       // Navigate directly without expanding sidebar
       const target = e.currentTarget as HTMLAnchorElement;
       if (target.href) {

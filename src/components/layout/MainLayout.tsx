@@ -92,8 +92,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       const target = event.target as Element;
       // Only auto-close on laptops and tablets
       if (window.innerWidth <= 1536 && !sidebarCollapsed) {
-        // Check if click is outside sidebar
-        if (!target.closest('[data-sidebar]') && !target.closest('[data-menu-button]')) {
+        // Check if click is outside sidebar AND not on navigation items
+        if (!target.closest('[data-sidebar]') && 
+            !target.closest('[data-menu-button]') &&
+            !target.closest('a[href]')) {
           setSidebarCollapsed(true);
         }
       }
