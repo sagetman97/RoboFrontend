@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -12,7 +12,8 @@ import {
   Settings,
   ChevronDown,
   ChevronUp,
-  Info
+  Info,
+  Loader2
 } from 'lucide-react';
 import MainLayout from '../components/layout/MainLayout';
 import { colors, spacing, borderRadius, shadows, typography } from '../styles/design-system';
@@ -345,10 +346,101 @@ const ActionButton = styled.button<{ variant?: 'primary' | 'secondary' }>`
   }
 `;
 
+// Processing Popup Styled Components
+const ProcessingOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const ProcessingPopup = styled.div`
+  background: ${colors.white};
+  border-radius: ${borderRadius.xl};
+  box-shadow: ${shadows.xl};
+  padding: ${spacing[8]};
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+`;
+
+const ProcessingTitle = styled.h2`
+  font-size: 24px;
+  font-weight: 700;
+  color: ${colors.textPrimary};
+  margin: 0 0 ${spacing[6]} 0;
+  font-family: ${typography.fontSerif};
+`;
+
+const ProcessingText = styled.p`
+  font-size: 16px;
+  color: ${colors.textSecondary};
+  line-height: 1.6;
+  margin: 0 0 ${spacing[6]} 0;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${spacing[4]};
+  margin: ${spacing[6]} 0;
+`;
+
+const LoadingSpinner = styled(Loader2)`
+  color: ${colors.everlyCherry};
+  animation: spin 2s linear infinite;
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+`;
+
+const ProcessingSteps = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing[3]};
+  text-align: left;
+  margin-top: ${spacing[4]};
+`;
+
+const ProcessingStep = styled.div<{ active: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: ${spacing[3]};
+  font-size: 14px;
+  color: ${props => props.active ? colors.everlyCherry : colors.textLight};
+  font-weight: ${props => props.active ? '600' : '400'};
+  transition: all 0.3s ease;
+`;
+
+const StepIcon = styled.div<{ active: boolean }>`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: ${props => props.active ? colors.everlyCherry : colors.lightGray};
+  color: ${props => props.active ? colors.white : colors.textLight};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+`;
+
 const AssessmentForm: React.FC = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [currentProcessingStep, setCurrentProcessingStep] = useState(0);
   const [formData, setFormData] = useState({
     // Essential Suitability Questions
     coverageDuration: '',
@@ -394,6 +486,30 @@ const AssessmentForm: React.FC = () => {
   const totalSteps = 3;
   const progress = (currentStep / totalSteps) * 100;
 
+  // Validation functions
+  const isStep1Valid = () => {
+    return formData.coverageDuration && 
+           formData.cashValueInterest && 
+           formData.riskTolerance && 
+           formData.premiumFlexibility;
+  };
+
+  const isStep2Valid = () => {
+    return formData.cashAccessNeeds && 
+           formData.educationFunding && 
+           formData.budgetPriority && 
+           formData.healthConcerns;
+  };
+
+  const isCurrentStepValid = () => {
+    switch (currentStep) {
+      case 1: return isStep1Valid();
+      case 2: return isStep2Valid();
+      case 3: return true; // Step 3 doesn't require validation
+      default: return false;
+    }
+  };
+
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({
       ...prev,
@@ -402,7 +518,7 @@ const AssessmentForm: React.FC = () => {
   };
 
   const handleNext = () => {
-    if (currentStep < totalSteps) {
+    if (isCurrentStepValid() && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -419,10 +535,32 @@ const AssessmentForm: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    // Submit form logic
-    console.log('Submitting form:', formData);
-    // Navigate to report viewer
-    navigate('/report/1'); // Using client ID 1 for demo
+    // Start processing popup
+    setIsProcessing(true);
+    setCurrentProcessingStep(0);
+    
+    // Simulate processing steps
+    const processingSteps = [
+      "Analyzing your insurance needs...",
+      "Identifying suitable products...",
+      "Tailoring to your individual life...",
+      "Building visualizations..."
+    ];
+
+    let stepIndex = 0;
+    const stepInterval = setInterval(() => {
+      setCurrentProcessingStep(stepIndex);
+      stepIndex++;
+      
+      if (stepIndex >= processingSteps.length) {
+        clearInterval(stepInterval);
+        // After 12 seconds total, navigate to report
+        setTimeout(() => {
+          setIsProcessing(false);
+          navigate('/report/1'); // Using client ID 1 for demo
+        }, 3000); // 3 seconds for the last step
+      }
+    }, 3000); // 3 seconds per step
   };
 
   const renderStepContent = () => {
@@ -965,6 +1103,13 @@ const AssessmentForm: React.FC = () => {
     }
   };
 
+  const processingSteps = [
+    "Analyzing your insurance needs...",
+    "Identifying suitable products...",
+    "Tailoring to your individual life...",
+    "Building visualizations..."
+  ];
+
   return (
     <MainLayout currentPage="clients">
       <AssessmentContainer>
@@ -1008,7 +1153,11 @@ const AssessmentForm: React.FC = () => {
               </ActionButton>
               
               {currentStep < totalSteps ? (
-                <ActionButton variant="primary" onClick={handleNext}>
+                <ActionButton 
+                  variant="primary" 
+                  onClick={handleNext}
+                  disabled={!isCurrentStepValid()}
+                >
                   Next
                   <ArrowRight size={16} />
                 </ActionButton>
@@ -1022,6 +1171,33 @@ const AssessmentForm: React.FC = () => {
           </FormActions>
         </FormContainer>
       </AssessmentContainer>
+
+      {/* Processing Popup */}
+      {isProcessing && (
+        <ProcessingOverlay>
+          <ProcessingPopup>
+            <ProcessingTitle>Processing Your Assessment</ProcessingTitle>
+            <ProcessingText>
+              Give us a moment while our AI analyzes your insurance needs and creates your personalized recommendation.
+            </ProcessingText>
+            
+            <LoadingContainer>
+              <LoadingSpinner size={48} />
+            </LoadingContainer>
+
+            <ProcessingSteps>
+              {processingSteps.map((step, index) => (
+                <ProcessingStep key={index} active={index <= currentProcessingStep}>
+                  <StepIcon active={index <= currentProcessingStep}>
+                    {index < currentProcessingStep ? '✓' : index + 1}
+                  </StepIcon>
+                  {step}
+                </ProcessingStep>
+              ))}
+            </ProcessingSteps>
+          </ProcessingPopup>
+        </ProcessingOverlay>
+      )}
     </MainLayout>
   );
 };
