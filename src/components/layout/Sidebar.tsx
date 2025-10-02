@@ -25,6 +25,16 @@ const SidebarContainer = styled.aside<{ collapsed: boolean }>`
   top: ${layout.headerHeight};
   left: 0;
   z-index: 90;
+
+  /* Auto-collapse on smaller laptop screens */
+  @media (max-width: 1366px) {
+    width: ${props => props.collapsed ? '80px' : '280px'};
+  }
+
+  /* Further reduce on very small laptop screens */
+  @media (max-width: 1280px) {
+    width: ${props => props.collapsed ? '80px' : '260px'};
+  }
 `;
 
 const SidebarHeader = styled.div`

@@ -91,6 +91,7 @@ const StatsGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: ${spacing[6]};
   margin-bottom: 0;
+  margin-top: ${spacing[4]};
 `;
 
 const StatCard = styled.div`
@@ -156,8 +157,9 @@ const StatDescription = styled.div`
 
 const ContentGrid = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: ${spacing[8]};
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${spacing[6]};
+  margin-top: ${spacing[4]};
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
@@ -258,7 +260,7 @@ const QuickActionItem = styled.button`
   align-items: flex-start;
   gap: ${spacing[4]};
   padding: ${spacing[4]} ${spacing[6]};
-  background: ${colors.lightGray};
+  background: ${colors.white};
   border: none;
   border-radius: ${borderRadius.base};
   cursor: pointer;
@@ -468,7 +470,7 @@ const Dashboard: React.FC = () => {
         </StatsGrid>
 
         <ContentGrid>
-          <ActivitySection>
+          <ActivitySection style={{ gridColumn: 'span 2' }}>
             <SectionHeader>
               <SectionTitle>Recent Activity</SectionTitle>
               <SectionSubtitle>Latest updates from your client portfolio</SectionSubtitle>
@@ -492,7 +494,7 @@ const Dashboard: React.FC = () => {
             </ActivityList>
           </ActivitySection>
 
-          <QuickActionsSection>
+          <QuickActionsSection style={{ gridColumn: 'span 1' }}>
             <SectionHeader>
               <SectionTitle>Quick Actions</SectionTitle>
               <SectionSubtitle>Common tasks and shortcuts</SectionSubtitle>

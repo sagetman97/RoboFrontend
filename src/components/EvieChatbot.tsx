@@ -20,6 +20,17 @@ const ChatbotContainer = styled.div<{ isOpen: boolean; isMinimized: boolean }>`
   transform: ${props => props.isOpen ? 'translateY(0)' : 'translateY(100px)'};
   opacity: ${props => props.isOpen ? 1 : 0};
   pointer-events: ${props => props.isOpen ? 'auto' : 'none'};
+
+  /* Adjust positioning for smaller screens */
+  @media (max-width: 1366px) {
+    bottom: ${spacing[4]};
+    right: ${spacing[4]};
+  }
+
+  @media (max-width: 1280px) {
+    bottom: ${spacing[3]};
+    right: ${spacing[3]};
+  }
 `;
 
 const ChatButton = styled.button<{ isOpen: boolean }>`
@@ -45,6 +56,21 @@ const ChatButton = styled.button<{ isOpen: boolean }>`
   &:hover {
     transform: ${props => props.isOpen ? 'scale(0)' : 'scale(1.1)'};
     box-shadow: ${shadows.xl};
+  }
+
+  /* Adjust positioning for smaller screens */
+  @media (max-width: 1366px) {
+    bottom: ${spacing[4]};
+    right: ${spacing[4]};
+    width: 55px;
+    height: 55px;
+  }
+
+  @media (max-width: 1280px) {
+    bottom: ${spacing[3]};
+    right: ${spacing[3]};
+    width: 50px;
+    height: 50px;
   }
 
   &::before {
@@ -87,6 +113,31 @@ const ChatWindow = styled.div<{ isMinimized: boolean }>`
   flex-direction: column;
   overflow: hidden;
   transition: all 0.3s ease;
+
+  /* Responsive sizing for different desktop screens */
+  @media (max-width: 1366px) {
+    width: ${props => props.isMinimized ? '350px' : '420px'};
+    height: ${props => props.isMinimized ? '70px' : '500px'};
+  }
+
+  @media (max-width: 1280px) {
+    width: ${props => props.isMinimized ? '320px' : '380px'};
+    height: ${props => props.isMinimized ? '65px' : '400px'};
+  }
+
+  @media (max-width: 1024px) {
+    width: ${props => props.isMinimized ? '300px' : '350px'};
+    height: ${props => props.isMinimized ? '60px' : '350px'};
+  }
+
+  /* Maximum height constraint to prevent overflow */
+  @media (max-height: 800px) {
+    height: ${props => props.isMinimized ? '60px' : '400px'};
+  }
+
+  @media (max-height: 600px) {
+    height: ${props => props.isMinimized ? '60px' : '300px'};
+  }
 `;
 
 const ChatHeader = styled.div`

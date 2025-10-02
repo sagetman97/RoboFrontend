@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { Bell, User, LogOut, Settings, CheckCircle, AlertCircle, FileText, MessageSquare } from 'lucide-react';
+import { Bell, User, LogOut, Settings, CheckCircle, AlertCircle, FileText, MessageSquare, Menu } from 'lucide-react';
 import { colors, spacing, shadows, layout } from '../../styles/design-system';
 
 const HeaderContainer = styled.header`
@@ -16,6 +16,35 @@ const HeaderContainer = styled.header`
   position: sticky;
   top: 0;
   z-index: 100;
+`;
+
+const LeftSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing[4]};
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  padding: ${spacing[2]};
+  border-radius: 6px;
+  color: ${colors.textSecondary};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${colors.lightGray};
+    color: ${colors.everlyOrange};
+  }
+
+  /* Show on smaller laptop screens */
+  @media (max-width: 1366px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const Logo = styled.div`
@@ -321,12 +350,14 @@ interface HeaderProps {
   userName?: string;
   userRole?: string;
   notificationCount?: number;
+  onMobileMenuToggle?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
   userName = 'John Agent',
   userRole = 'Life Insurance Agent',
-  notificationCount = 3
+  notificationCount = 3,
+  onMobileMenuToggle
 }) => {
   const navigate = useNavigate();
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
@@ -466,9 +497,17 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <HeaderContainer>
-      <Logo>
-        <LogoIcon src="/Everly_HorizontalLogo.png" alt="Everly Logo" />
-      </Logo>
+      <LeftSection>
+        <MobileMenuButton 
+          onClick={onMobileMenuToggle}
+          data-menu-button="true"
+        >
+          <Menu size={20} />
+        </MobileMenuButton>
+        <Logo>
+          <LogoIcon src="/Everly_HorizontalLogo.png" alt="Everly Logo" />
+        </Logo>
+      </LeftSection>
 
       <RightSection>
         <div style={{ position: 'relative' }} data-dropdown>
