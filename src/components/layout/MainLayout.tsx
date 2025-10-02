@@ -62,7 +62,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   // Auto-collapse/expand sidebar based on screen size
   useEffect(() => {
     const handleResize = () => {
-      // Auto-collapse on MacBook screens and smaller laptops
+      // Auto-collapse on MacBook screens and smaller laptops (including 1440px width)
       if (window.innerWidth <= 1440) {
         setSidebarCollapsed(true);
       } else {
