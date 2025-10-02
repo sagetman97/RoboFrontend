@@ -25,7 +25,6 @@ const LoginContent = styled.div`
   height: 90vh;
   min-height: 700px;
   max-height: 800px;
-  box-shadow: ${shadows.xl};
 `;
 
 const LeftPanel = styled.div`
@@ -107,7 +106,6 @@ const LoginForm = styled.div`
   border-radius: ${borderRadius.xl};
   width: 100%;
   max-width: 500px;
-  border: 1px solid ${colors.border};
 `;
 
 const FormTitle = styled.h2`
@@ -237,13 +235,11 @@ const LoginButton = styled.button`
   gap: ${spacing[3]};
   margin-bottom: ${spacing[6]};
   height: 56px;
-  box-shadow: ${shadows.md};
   box-sizing: border-box;
 
   &:hover {
     background: #A0005A;
     transform: translateY(-2px);
-    box-shadow: ${shadows.lg};
   }
 
   &:active {
