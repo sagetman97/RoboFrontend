@@ -173,13 +173,16 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const location = useLocation();
 
-  // Handle navigation click on small screens - prevent sidebar expansion
+  // Handle navigation click on small screens - prevent sidebar expansion when minimized
   const handleNavClick = (e: React.MouseEvent) => {
-    if (window.innerWidth <= 1536 && !collapsed) {
-      // On small screens, if sidebar is open, close it after navigation
-      setTimeout(() => {
-        if (onToggle) onToggle();
-      }, 100);
+    if (window.innerWidth <= 1536 && collapsed) {
+      // On small screens, if sidebar is minimized, prevent it from expanding
+      e.preventDefault();
+      // Navigate directly without expanding sidebar
+      const target = e.currentTarget as HTMLAnchorElement;
+      if (target.href) {
+        window.location.href = target.href;
+      }
     }
   };
   
