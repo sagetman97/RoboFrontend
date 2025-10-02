@@ -322,7 +322,7 @@ const DropdownItem = styled.button`
 
   &:hover {
     background: ${colors.lightGray};
-    color: ${colors.everlyCherry};
+    color: ${colors.everlyOrange};
   }
 `;
 

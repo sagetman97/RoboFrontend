@@ -23,7 +23,9 @@ import {
   CheckCircle2,
   XCircle,
   Clock3,
-  X
+  X,
+  Copy,
+  ExternalLink
 } from 'lucide-react';
 import MainLayout from '../components/layout/MainLayout';
 import { colors, spacing, borderRadius, shadows, typography } from '../styles/design-system';
@@ -634,6 +636,131 @@ const ActionIcon = styled.button`
   }
 `;
 
+// Send Assessment Popup Components
+const AssessmentPopup = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+const AssessmentPopupContent = styled.div`
+  background: ${colors.white};
+  border-radius: ${borderRadius.xl};
+  box-shadow: ${shadows.xl};
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;
+
+const AssessmentPopupHeader = styled.div`
+  padding: ${spacing[6]} ${spacing[6]} ${spacing[4]};
+  border-bottom: 1px solid ${colors.border};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const AssessmentPopupTitle = styled.h2`
+  font-size: 24px;
+  font-weight: 600;
+  color: ${colors.textPrimary};
+  margin: 0;
+`;
+
+const AssessmentCloseButton = styled.button`
+  background: none;
+  border: none;
+  color: ${colors.textSecondary};
+  cursor: pointer;
+  padding: ${spacing[2]};
+  border-radius: ${borderRadius.base};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${colors.lightGray};
+    color: ${colors.textPrimary};
+  }
+`;
+
+const AssessmentPopupBody = styled.div`
+  padding: ${spacing[2]} ${spacing[6]} ${spacing[6]} ${spacing[6]};
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing[4]};
+`;
+
+const AssessmentLinkLabel = styled.label`
+  font-size: 16px;
+  font-weight: 600;
+  color: ${colors.textPrimary};
+  margin-bottom: ${spacing[3]};
+  display: block;
+`;
+
+
+const AssessmentDescription = styled.p`
+  font-size: 14px;
+  color: ${colors.textSecondary};
+  line-height: 1.6;
+  margin: 0 0 ${spacing[6]} 0;
+`;
+
+const AssessmentActions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing[3]};
+  width: 100%;
+`;
+
+const AssessmentActionButton = styled.button<{ variant: 'primary' | 'secondary' }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${spacing[2]};
+  padding: ${spacing[4]} ${spacing[6]};
+  border-radius: ${borderRadius.base};
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: ${colors.white};
+  color: ${colors.textPrimary};
+  width: 100%;
+  box-sizing: border-box;
+
+  ${props => props.variant === 'primary' ? `
+    border: 2px solid ${colors.everlyOrange};
+
+    &:hover {
+      background: ${colors.everlyOrange};
+      color: ${colors.white};
+      transform: translateY(-1px);
+      box-shadow: ${shadows.md};
+    }
+  ` : `
+    border: 2px solid ${colors.everlyCherry};
+
+    &:hover {
+      background: ${colors.everlyCherry};
+      color: ${colors.white};
+    }
+  `}
+`;
+
 const CallPopup = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
@@ -879,6 +1006,8 @@ const ClientList: React.FC = () => {
   const [scoreDropdownOpen, setScoreDropdownOpen] = useState(false);
   const [callPopupOpen, setCallPopupOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [assessmentPopupOpen, setAssessmentPopupOpen] = useState(false);
+  const [assessmentClient, setAssessmentClient] = useState<Client | null>(null);
   const itemsPerPage = 10;
 
   // Initialize filters from URL parameters
@@ -1099,6 +1228,40 @@ const ClientList: React.FC = () => {
       // This would typically be done via API call
     }
     handleCloseCallPopup();
+  };
+
+  // Assessment popup handlers
+  const handleSendAssessmentClick = (client: Client) => {
+    setAssessmentClient(client);
+    setAssessmentPopupOpen(true);
+  };
+
+  const handleCloseAssessmentPopup = () => {
+    setAssessmentPopupOpen(false);
+    setAssessmentClient(null);
+  };
+
+  const handleCopyLink = () => {
+    if (assessmentClient) {
+      const assessmentLink = `https://everly-agent-platform.com/assessment/${assessmentClient.id}`;
+      navigator.clipboard.writeText(assessmentLink);
+    }
+  };
+
+  const handleEmailAssessment = () => {
+    if (assessmentClient) {
+      setAssessmentPopupOpen(false);
+      // Navigate to communication page with assessment template
+      navigate('/communication?template=assessment&clientId=' + assessmentClient.id);
+    }
+  };
+
+  const handleCompleteAssessment = () => {
+    if (assessmentClient) {
+      setAssessmentPopupOpen(false);
+      // Navigate to assessment form
+      navigate(`/assessment/${assessmentClient.id}`);
+    }
   };
 
   // Close dropdowns when clicking outside
@@ -1588,7 +1751,13 @@ const ClientList: React.FC = () => {
                       title="Send Assessment"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/assessment/${client.id}`);
+                        if (!['report-ready', 'follow-up-needed', 'application-started', 'protected'].includes(client.status)) {
+                          handleSendAssessmentClick(client);
+                        }
+                      }}
+                      style={{ 
+                        opacity: !['report-ready', 'follow-up-needed', 'application-started', 'protected'].includes(client.status) ? 1 : 0.5,
+                        cursor: !['report-ready', 'follow-up-needed', 'application-started', 'protected'].includes(client.status) ? 'pointer' : 'not-allowed'
                       }}
                     >
                       <Send size={14} />
@@ -1719,6 +1888,78 @@ const ClientList: React.FC = () => {
             )}
           </CallPopupContent>
         </CallPopup>
+
+        {/* Send Assessment Popup */}
+        {assessmentPopupOpen && (
+          <AssessmentPopup onClick={handleCloseAssessmentPopup}>
+            <AssessmentPopupContent onClick={(e) => e.stopPropagation()}>
+              <AssessmentPopupHeader>
+                <AssessmentPopupTitle>Send Assessment</AssessmentPopupTitle>
+                <AssessmentCloseButton onClick={handleCloseAssessmentPopup}>
+                  <X size={20} />
+                </AssessmentCloseButton>
+              </AssessmentPopupHeader>
+              
+              <AssessmentPopupBody>
+                <div>
+                  <AssessmentLinkLabel>Shareable Assessment Link</AssessmentLinkLabel>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '16px', paddingLeft: '16px' }}>
+                    <input 
+                      type="text" 
+                      value={assessmentClient ? `https://everly-agent-platform.com/assessment/${assessmentClient.id}` : ''}
+                      readOnly
+                      style={{
+                        flex: 1,
+                        padding: '12px 0 12px 0',
+                        background: '#f8f9fa',
+                        border: '1px solid #e9ecef',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        fontFamily: 'monospace'
+                      }}
+                    />
+                    <button 
+                      onClick={handleCopyLink}
+                      style={{
+                        background: '#FF6E1E',
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 12px',
+                        borderRadius: '8px',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}
+                    >
+                      <Copy size={14} />
+                      Copy
+                    </button>
+                  </div>
+                </div>
+
+                <AssessmentDescription>
+                  <strong>Email Assessment:</strong> Send this link to {assessmentClient?.name} so they can complete their life insurance needs assessment themselves. This allows them to fill out the form at their own pace and convenience.
+                  <br /><br />
+                  <strong>Complete Assessment:</strong> Fill out the assessment form yourself on behalf of {assessmentClient?.name} if you feel comfortable and confident with their information. This is helpful when clients prefer guidance or have complex situations.
+                </AssessmentDescription>
+
+                <AssessmentActions>
+                  <AssessmentActionButton variant="secondary" onClick={handleEmailAssessment}>
+                    <Mail size={18} />
+                    Email Assessment
+                  </AssessmentActionButton>
+                  <AssessmentActionButton variant="primary" onClick={handleCompleteAssessment}>
+                    <ExternalLink size={18} />
+                    Complete Assessment
+                  </AssessmentActionButton>
+                </AssessmentActions>
+              </AssessmentPopupBody>
+            </AssessmentPopupContent>
+          </AssessmentPopup>
+        )}
       </ClientListContainer>
     </MainLayout>
   );
