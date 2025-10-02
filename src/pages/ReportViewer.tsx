@@ -7,7 +7,6 @@ import {
   Share, 
   CheckCircle, 
   Edit, 
-  Eye,
   Calendar,
   FileText,
   Send,
@@ -122,7 +121,6 @@ const ActionButton = styled.button`
 const StatusBanner = styled.div<{ status: string }>`
   padding: ${spacing[4]} ${spacing[6]};
   border-radius: ${borderRadius.lg};
-  margin-bottom: ${spacing[4]};
   display: flex;
   align-items: center;
   gap: ${spacing[3]};
@@ -160,17 +158,6 @@ const ReportGrid = styled.div`
   }
 `;
 
-const MainContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[4]};
-`;
-
-const Sidebar = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${spacing[4]};
-`;
 
 const Card = styled.div`
   background: ${colors.white};
@@ -218,8 +205,9 @@ const SummaryItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${spacing[3]} 0;
+  padding: ${spacing[2]} 0;
   border-bottom: 1px solid ${colors.border};
+  min-height: 40px;
 
   &:last-child {
     border-bottom: none;
@@ -232,7 +220,7 @@ const SummaryLabel = styled.div`
 `;
 
 const SummaryValue = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: ${colors.textPrimary};
 `;
@@ -247,45 +235,59 @@ const RecommendationCard = styled.div`
   padding: ${spacing[6]};
   border-radius: ${borderRadius.lg};
   border-left: 4px solid ${colors.everlyCherry};
+  display: flex;
+  flex-direction: column;
+  gap: ${spacing[4]};
 `;
 
 const RecommendationTitle = styled.h4`
-  font-size: 18px;
-  font-weight: 600;
-  color: ${colors.textPrimary};
-  margin: 0 0 ${spacing[3]} 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: ${colors.everlyCherry};
+  margin: 0;
+  font-family: ${typography.fontSerif};
 `;
 
 const RecommendationText = styled.p`
-  font-size: 14px;
-  color: ${colors.textSecondary};
+  font-size: 16px;
+  color: ${colors.textPrimary};
   line-height: 1.6;
-  margin: 0 0 ${spacing[4]} 0;
+  margin: 0;
+  max-width: 800px;
 `;
 
 const RecommendationDetails = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: ${spacing[4]};
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const DetailItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${spacing[1]};
+  padding: ${spacing[3]};
+  background: ${colors.white};
+  border-radius: ${borderRadius.base};
+  border: 1px solid ${colors.border};
 `;
 
 const DetailLabel = styled.div`
   font-size: 12px;
-  color: ${colors.textLight};
+  color: ${colors.textPrimary};
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-weight: 600;
 `;
 
 const DetailValue = styled.div`
-  font-size: 16px;
-  font-weight: 600;
-  color: ${colors.textPrimary};
+  font-size: 18px;
+  font-weight: 700;
+  color: ${colors.everlyCherry};
 `;
 
 const ApprovalSection = styled.div`
@@ -424,6 +426,7 @@ const InfoItem = styled.div`
   align-items: center;
   padding: ${spacing[2]} 0;
   border-bottom: 1px solid ${colors.border};
+  min-height: 40px;
 
   &:last-child {
     border-bottom: none;
@@ -437,7 +440,7 @@ const InfoLabel = styled.div`
 
 const InfoValue = styled.div`
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: ${colors.textPrimary};
 `;
 
@@ -541,253 +544,255 @@ const ReportViewer: React.FC = () => {
           )}
         </StatusBanner>
 
+        {/* Full-width Recommendation Card */}
+        <Card style={{ gridColumn: 'span 2' }}>
+          <CardHeader>
+            <CardTitle>Recommendation</CardTitle>
+            <CardSubtitle>Personalized life insurance solution</CardSubtitle>
+          </CardHeader>
+          <CardContent>
+            <RecommendationCard>
+              <RecommendationTitle>JPM TermVest+: Term Track 20 Years</RecommendationTitle>
+              <RecommendationText>
+                JPM TermVest+ offers two tracks: Term and IUL. The Term Track provides essential protection at an affordable premium for a specified period. You can convert to the IUL Track later to begin building cash value savings with permanent coverage when your financial situation allows.
+                <br /><br />
+                <strong>Why Term?</strong> Term life insurance provides essential protection at an affordable premium. With 20 years of coverage, you'll have protection during your peak earning years and family responsibilities. You can convert to permanent coverage later when your financial situation allows.
+              </RecommendationText>
+              <RecommendationDetails>
+                <DetailItem>
+                  <DetailLabel>Product Type</DetailLabel>
+                  <DetailValue>JPM TermVest+</DetailValue>
+                </DetailItem>
+                <DetailItem>
+                  <DetailLabel>Coverage Amount</DetailLabel>
+                  <DetailValue>{formatCurrency(500000)}</DetailValue>
+                </DetailItem>
+                <DetailItem>
+                  <DetailLabel>Term Track</DetailLabel>
+                  <DetailValue>20 years</DetailValue>
+                </DetailItem>
+                <DetailItem>
+                  <DetailLabel>Estimated Premium</DetailLabel>
+                  <DetailValue>$45/month</DetailValue>
+                </DetailItem>
+              </RecommendationDetails>
+            </RecommendationCard>
+          </CardContent>
+        </Card>
+
         <ReportGrid>
+          {/* Row 1: Executive Summary and Client Information */}
           <Card>
             <CardHeader>
               <CardTitle>Executive Summary</CardTitle>
               <CardSubtitle>Key findings and recommendations</CardSubtitle>
             </CardHeader>
             <CardContent>
-                <ExecutiveSummary>
-                  <SummaryItem>
-                    <SummaryLabel>Current Protection Score</SummaryLabel>
-                    <SummaryValue>45%</SummaryValue>
-                  </SummaryItem>
-                  <SummaryItem>
-                    <SummaryLabel>Current Coverage</SummaryLabel>
-                    <SummaryValue>{formatCurrency(200000)}</SummaryValue>
-                  </SummaryItem>
-                  <SummaryItem>
-                    <SummaryLabel>Coverage Gap</SummaryLabel>
-                    <SummaryValue>{formatCurrency(500000)}</SummaryValue>
-                  </SummaryItem>
-                  <SummaryItem>
-                    <SummaryLabel>Recommended Coverage</SummaryLabel>
-                    <SummaryValue>{formatCurrency(700000)}</SummaryValue>
-                  </SummaryItem>
-                  <SummaryItem>
-                    <SummaryLabel>Duration Needed</SummaryLabel>
-                    <SummaryValue>20 years</SummaryValue>
-                  </SummaryItem>
-                </ExecutiveSummary>
-              </CardContent>
-            </Card>
+              <ExecutiveSummary>
+                <SummaryItem>
+                  <SummaryLabel>Current Protection Score</SummaryLabel>
+                  <SummaryValue>45%</SummaryValue>
+                </SummaryItem>
+                <SummaryItem>
+                  <SummaryLabel>Current Coverage</SummaryLabel>
+                  <SummaryValue>{formatCurrency(200000)}</SummaryValue>
+                </SummaryItem>
+                <SummaryItem>
+                  <SummaryLabel>Coverage Gap</SummaryLabel>
+                  <SummaryValue>{formatCurrency(500000)}</SummaryValue>
+                </SummaryItem>
+                <SummaryItem>
+                  <SummaryLabel>Recommended Coverage</SummaryLabel>
+                  <SummaryValue>{formatCurrency(700000)}</SummaryValue>
+                </SummaryItem>
+                <SummaryItem>
+                  <SummaryLabel>Duration Needed</SummaryLabel>
+                  <SummaryValue>20 years</SummaryValue>
+                </SummaryItem>
+              </ExecutiveSummary>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Protection Score Analysis</CardTitle>
-                <CardSubtitle>Current coverage vs. recommended coverage</CardSubtitle>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={protectionScoreData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={120}
-                        paddingAngle={5}
-                        dataKey="value"
-                      >
-                        {protectionScoreData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Client Information</CardTitle>
+              <CardSubtitle>Assessment details</CardSubtitle>
+            </CardHeader>
+            <CardContent>
+              <ClientInfo>
+                <InfoItem>
+                  <InfoLabel>Name</InfoLabel>
+                  <InfoValue>John Smith</InfoValue>
+                </InfoItem>
+                <InfoItem>
+                  <InfoLabel>Age</InfoLabel>
+                  <InfoValue>34 years</InfoValue>
+                </InfoItem>
+                <InfoItem>
+                  <InfoLabel>Annual Income</InfoLabel>
+                  <InfoValue>{formatCurrency(75000)}</InfoValue>
+                </InfoItem>
+                <InfoItem>
+                  <InfoLabel>Dependents</InfoLabel>
+                  <InfoValue>2 children</InfoValue>
+                </InfoItem>
+                <InfoItem>
+                  <InfoLabel>Assessment Date</InfoLabel>
+                  <InfoValue>Dec 15, 2024</InfoValue>
+                </InfoItem>
+              </ClientInfo>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Coverage Timeline</CardTitle>
-                <CardSubtitle>How coverage needs change over time</CardSubtitle>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={timelineData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="year" />
-                      <YAxis tickFormatter={(value) => `$${(value / 1000)}k`} />
-                      <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                      <Line type="monotone" dataKey="coverage" stroke={colors.error} strokeWidth={3} />
-                      <Line type="monotone" dataKey="need" stroke={colors.everlyCherry} strokeWidth={3} />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </CardContent>
-            </Card>
+          {/* Row 2: Protection Score Analysis and Approval Workflow */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Protection Score Analysis</CardTitle>
+              <CardSubtitle>Current coverage vs. recommended coverage</CardSubtitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={protectionScoreData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={120}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {protectionScoreData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Portfolio Integration</CardTitle>
-                <CardSubtitle>How life insurance fits into overall financial portfolio</CardSubtitle>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={portfolioData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="category" />
-                      <YAxis tickFormatter={(value) => `$${(value / 1000)}k`} />
-                      <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                      <Bar dataKey="value" fill={colors.everlyCherry} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Approval Workflow</CardTitle>
+              <CardSubtitle>
+                {reportStatus === 'approved' ? 'Report approved - ready for next steps' : 'Review and approve this report'}
+              </CardSubtitle>
+            </CardHeader>
+            <CardContent>
+              {reportStatus === 'approved' ? (
+                <PostApprovalActions>
+                  <PostApprovalButton variant="cherry" onClick={handleSendReport}>
+                    <Send size={20} />
+                    Send Report
+                  </PostApprovalButton>
+                  <PostApprovalButton variant="orange" onClick={handleStartApplication}>
+                    <FileText size={20} />
+                    Start Application
+                  </PostApprovalButton>
+                </PostApprovalActions>
+              ) : (
+                <ApprovalSection>
+                  <ApprovalTitle>Agent Review</ApprovalTitle>
+                  <ApprovalActions>
+                    <ApprovalButton className="approve" onClick={handleApprove}>
+                      <CheckCircle size={16} />
+                      Approve
+                    </ApprovalButton>
+                    <ApprovalButton className="edit" onClick={handleEdit}>
+                      <Edit size={16} />
+                      Edit
+                    </ApprovalButton>
+                  </ApprovalActions>
+                  <NotesSection>
+                    <label style={{ fontSize: '14px', fontWeight: '500', color: colors.textPrimary }}>
+                      Agent Notes
+                    </label>
+                    <NotesTextArea
+                      value={agentNotes}
+                      onChange={(e) => setAgentNotes(e.target.value)}
+                      placeholder="Add notes about this report..."
+                    />
+                  </NotesSection>
+                </ApprovalSection>
+              )}
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Recommendation</CardTitle>
-                <CardSubtitle>Personalized life insurance solution</CardSubtitle>
-              </CardHeader>
-              <CardContent>
-                <RecommendationCard>
-                  <RecommendationTitle>Term Life Insurance - 20 Years</RecommendationTitle>
-                  <RecommendationText>
-                    Based on your age, family situation, and financial goals, a 20-year term life insurance 
-                    policy with $500,000 coverage would provide adequate protection for your family's needs. 
-                    This recommendation takes into account your current income, expenses, and future financial obligations.
-                  </RecommendationText>
-                  <RecommendationDetails>
-                    <DetailItem>
-                      <DetailLabel>Product Type</DetailLabel>
-                      <DetailValue>Term Life Insurance</DetailValue>
-                    </DetailItem>
-                    <DetailItem>
-                      <DetailLabel>Coverage Amount</DetailLabel>
-                      <DetailValue>{formatCurrency(500000)}</DetailValue>
-                    </DetailItem>
-                    <DetailItem>
-                      <DetailLabel>Term Length</DetailLabel>
-                      <DetailValue>20 years</DetailValue>
-                    </DetailItem>
-                    <DetailItem>
-                      <DetailLabel>Estimated Premium</DetailLabel>
-                      <DetailValue>$45/month</DetailValue>
-                    </DetailItem>
-                  </RecommendationDetails>
-                </RecommendationCard>
-              </CardContent>
-            </Card>
-          </MainContent>
+          {/* Row 3: Coverage Timeline and Next Steps */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Coverage Timeline</CardTitle>
+              <CardSubtitle>How coverage needs change over time</CardSubtitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={timelineData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="year" />
+                    <YAxis tickFormatter={(value) => `$${(value / 1000)}k`} />
+                    <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                    <Line type="monotone" dataKey="coverage" stroke={colors.error} strokeWidth={3} />
+                    <Line type="monotone" dataKey="need" stroke={colors.everlyCherry} strokeWidth={3} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </CardContent>
+          </Card>
 
-          <Sidebar>
-            <Card>
-              <CardHeader>
-                <CardTitle>Client Information</CardTitle>
-                <CardSubtitle>Assessment details</CardSubtitle>
-              </CardHeader>
-              <CardContent>
-                <ClientInfo>
-                  <InfoItem>
-                    <InfoLabel>Name</InfoLabel>
-                    <InfoValue>John Smith</InfoValue>
-                  </InfoItem>
-                  <InfoItem>
-                    <InfoLabel>Age</InfoLabel>
-                    <InfoValue>34 years</InfoValue>
-                  </InfoItem>
-                  <InfoItem>
-                    <InfoLabel>Annual Income</InfoLabel>
-                    <InfoValue>{formatCurrency(75000)}</InfoValue>
-                  </InfoItem>
-                  <InfoItem>
-                    <InfoLabel>Dependents</InfoLabel>
-                    <InfoValue>2 children</InfoValue>
-                  </InfoItem>
-                  <InfoItem>
-                    <InfoLabel>Assessment Date</InfoLabel>
-                    <InfoValue>Dec 15, 2024</InfoValue>
-                  </InfoItem>
-                </ClientInfo>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Next Steps</CardTitle>
+              <CardSubtitle>Actions after approval</CardSubtitle>
+            </CardHeader>
+            <CardContent>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[3] }}>
+                <ActionButton className="secondary">
+                  <Send size={16} />
+                  Send to Client
+                </ActionButton>
+                <ActionButton className="tertiary">
+                  <Calendar size={16} />
+                  Schedule Call
+                </ActionButton>
+                <ActionButton 
+                  className="tertiary"
+                  onClick={() => {
+                    // In a real application, this would redirect to the sister website
+                    // with pre-populated data from the report
+                    window.open('https://everlylife.com/apply', '_blank');
+                  }}
+                >
+                  <FileText size={16} />
+                  Continue Application
+                </ActionButton>
+              </div>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Approval Workflow</CardTitle>
-                <CardSubtitle>
-                  {reportStatus === 'approved' ? 'Report approved - ready for next steps' : 'Review and approve this report'}
-                </CardSubtitle>
-              </CardHeader>
-              <CardContent>
-                {reportStatus === 'approved' ? (
-                  <PostApprovalActions>
-                    <PostApprovalButton variant="cherry" onClick={handleSendReport}>
-                      <Send size={20} />
-                      Send Report
-                    </PostApprovalButton>
-                    <PostApprovalButton variant="orange" onClick={handleStartApplication}>
-                      <FileText size={20} />
-                      Start Application
-                    </PostApprovalButton>
-                  </PostApprovalActions>
-                ) : (
-                  <ApprovalSection>
-                    <ApprovalTitle>Agent Review</ApprovalTitle>
-                    <ApprovalActions>
-                      <ApprovalButton className="approve" onClick={handleApprove}>
-                        <CheckCircle size={16} />
-                        Approve
-                      </ApprovalButton>
-                      <ApprovalButton className="edit" onClick={handleEdit}>
-                        <Edit size={16} />
-                        Edit
-                      </ApprovalButton>
-                    </ApprovalActions>
-                    <NotesSection>
-                      <label style={{ fontSize: '14px', fontWeight: '500', color: colors.textPrimary }}>
-                        Agent Notes
-                      </label>
-                      <NotesTextArea
-                        value={agentNotes}
-                        onChange={(e) => setAgentNotes(e.target.value)}
-                        placeholder="Add notes about this report..."
-                      />
-                    </NotesSection>
-                  </ApprovalSection>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Next Steps</CardTitle>
-                <CardSubtitle>Actions after approval</CardSubtitle>
-              </CardHeader>
-              <CardContent>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: spacing[3] }}>
-                  <ActionButton className="secondary">
-                    <Send size={16} />
-                    Send to Client
-                  </ActionButton>
-                  <ActionButton className="tertiary">
-                    <Calendar size={16} />
-                    Schedule Call
-                  </ActionButton>
-                  <ActionButton 
-                    className="tertiary"
-                    onClick={() => {
-                      // In a real application, this would redirect to the sister website
-                      // with pre-populated data from the report
-                      window.open('https://everlylife.com/apply', '_blank');
-                    }}
-                  >
-                    <FileText size={16} />
-                    Continue Application
-                  </ActionButton>
-                </div>
-              </CardContent>
-            </Card>
-          </Sidebar>
+          {/* Row 4: Portfolio Integration */}
+          <Card style={{ gridColumn: 'span 2' }}>
+            <CardHeader>
+              <CardTitle>Portfolio Integration</CardTitle>
+              <CardSubtitle>How life insurance fits into overall financial portfolio</CardSubtitle>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={portfolioData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="category" />
+                    <YAxis tickFormatter={(value) => `$${(value / 1000)}k`} />
+                    <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                    <Bar dataKey="value" fill={colors.everlyCherry} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </CardContent>
+          </Card>
         </ReportGrid>
       </ReportContainer>
     </MainLayout>
