@@ -1251,8 +1251,9 @@ const ClientList: React.FC = () => {
   const handleEmailAssessment = () => {
     if (assessmentClient) {
       setAssessmentPopupOpen(false);
-      // Navigate to communication page with assessment template
-      navigate('/communication?template=assessment&clientId=' + assessmentClient.id);
+      // Navigate to communication page with appropriate template based on status
+      const template = assessmentClient.status === 'assessment-sent' ? 'follow-up-reminder' : 'assessment';
+      navigate('/communication?template=' + template + '&clientId=' + assessmentClient.id);
     }
   };
 
@@ -1941,15 +1942,25 @@ const ClientList: React.FC = () => {
                 </div>
 
                 <AssessmentDescription>
-                  <strong>Email Assessment:</strong> Send this link to {assessmentClient?.name} so they can complete their life insurance needs assessment themselves. This allows them to fill out the form at their own pace and convenience.
-                  <br /><br />
-                  <strong>Complete Assessment:</strong> Fill out the assessment form yourself on behalf of {assessmentClient?.name} if you feel comfortable and confident with their information. This is helpful when clients prefer guidance or have complex situations.
+                  {assessmentClient?.status === 'assessment-sent' ? (
+                    <>
+                      <strong>Send Reminder:</strong> This user has already been sent an Assessment link, you can send a follow-up email to help remind them.
+                      <br /><br />
+                      <strong>Complete Assessment:</strong> Fill out the assessment form yourself on behalf of {assessmentClient?.name} if you feel comfortable and confident with their information. This is helpful when clients prefer guidance or have complex situations.
+                    </>
+                  ) : (
+                    <>
+                      <strong>Email Assessment:</strong> Send this link to {assessmentClient?.name} so they can complete their life insurance needs assessment themselves. This allows them to fill out the form at their own pace and convenience.
+                      <br /><br />
+                      <strong>Complete Assessment:</strong> Fill out the assessment form yourself on behalf of {assessmentClient?.name} if you feel comfortable and confident with their information. This is helpful when clients prefer guidance or have complex situations.
+                    </>
+                  )}
                 </AssessmentDescription>
 
                 <AssessmentActions>
                   <AssessmentActionButton variant="secondary" onClick={handleEmailAssessment}>
                     <Mail size={18} />
-                    Email Assessment
+                    {assessmentClient?.status === 'assessment-sent' ? 'Send Reminder' : 'Email Assessment'}
                   </AssessmentActionButton>
                   <AssessmentActionButton variant="primary" onClick={handleCompleteAssessment}>
                     <ExternalLink size={18} />

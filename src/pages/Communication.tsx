@@ -295,25 +295,39 @@ const Communication: React.FC = () => {
     }
   };
 
-  // Handle URL parameters for assessment template
+  // Handle URL parameters for assessment and follow-up-reminder templates
   useEffect(() => {
     const templateParam = searchParams.get('template');
     const clientIdParam = searchParams.get('clientId');
     
-    if (templateParam === 'assessment' && clientIdParam) {
+    if ((templateParam === 'assessment' || templateParam === 'follow-up-reminder') && clientIdParam) {
       // Switch to compose email tab
       setActiveTab('compose');
       
-      // Select assessment template and add the link
-      const assessmentTemplate = emailTemplates.find(t => t.id === '1');
-      if (assessmentTemplate) {
-        setSelectedTemplate('1');
-        setEmailSubject(assessmentTemplate.subject);
-        
-        // Add the assessment link to the content
-        const assessmentLink = `https://everly-agent-platform.com/assessment/${clientIdParam}`;
-        const contentWithLink = assessmentTemplate.content + `\n\nAssessment Link: ${assessmentLink}`;
-        setEmailContent(contentWithLink);
+      if (templateParam === 'assessment') {
+        // Select assessment template and add the link
+        const assessmentTemplate = emailTemplates.find(t => t.id === '1');
+        if (assessmentTemplate) {
+          setSelectedTemplate('1');
+          setEmailSubject(assessmentTemplate.subject);
+          
+          // Add the assessment link to the content
+          const assessmentLink = `https://everly-agent-platform.com/assessment/${clientIdParam}`;
+          const contentWithLink = assessmentTemplate.content + `\n\nAssessment Link: ${assessmentLink}`;
+          setEmailContent(contentWithLink);
+        }
+      } else if (templateParam === 'follow-up-reminder') {
+        // Select follow-up reminder template and add the link
+        const followUpTemplate = emailTemplates.find(t => t.id === '3');
+        if (followUpTemplate) {
+          setSelectedTemplate('3');
+          setEmailSubject(followUpTemplate.subject);
+          
+          // Add the assessment link to the content
+          const assessmentLink = `https://everly-agent-platform.com/assessment/${clientIdParam}`;
+          const contentWithLink = followUpTemplate.content + `\n\nAssessment Link: ${assessmentLink}`;
+          setEmailContent(contentWithLink);
+        }
       }
     }
   }, [searchParams]);
